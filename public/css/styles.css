@@ -1,0 +1,130 @@
+/* General body styling */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+/* Sidebar styles */
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #343a40;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 20px;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar ul li {
+    padding: 10px 20px;
+}
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+    font-weight: 500;
+}
+.sidebar ul li a:hover {
+    background-color: #495057;
+}
+.sidebar .closebtn {
+    display: none; /* Hide close button on desktop */
+    position: absolute;
+    top: 0;
+    right: 20px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+/* Main content area */
+#mainContent {
+    margin-left: 250px; /* Same as the sidebar width */
+    padding: 20px;
+    transition: margin-left 0.5s;
+}
+
+/* Open button for mobile */
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #343a40;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    display: none; /* Hide open button on desktop */
+}
+
+.openbtn:hover {
+    background-color: #495057;
+}
+
+/* Overlay to close sidebar when clicking outside */
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 250px; /* Starts from the right edge of the sidebar */
+    width: calc(100% - 250px); /* Cover the remaining part of the screen */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 900; /* Ensure overlay is on top of the sidebar */
+}
+.container {
+    padding-top: 3%;
+}
+.seperate_line {
+    border-bottom: 2px solid grey;
+    margin: 10px 20px;
+    width: 80%;
+}
+.sub-menu {
+    padding-left: 20% !important;
+}
+/* Media query for screens up to 767px wide */
+@media only screen and (max-width: 767px) {
+    .sidebar {
+        width: 0;
+        padding-top: 60px;
+        z-index: 1000;
+    }
+
+    .sidebar.open {
+        width: 250px;
+    }
+
+    .sidebar .closebtn {
+        display: block;
+    }
+
+    #mainContent {
+        margin-left: 0;
+        padding: 20px;
+        transition: margin-left 0.5s;
+    }
+
+    .openbtn {
+        display: block;
+    }
+    .toplogo {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        background-color: #343a40;
+    }
+
+    #overlay {
+        left: 0;
+        width: 100%;
+        display: none; /* Overlay will be toggled via JavaScript */
+    }
+}

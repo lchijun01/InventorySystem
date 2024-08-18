@@ -1,0 +1,35 @@
+<!-- views/partials/sidebar.ejs -->
+<div id="mySidebar" class="sidebar">
+    <ul>
+        <li><a href="/" style="font-size: 20px;"><i class="bi bi-bar-chart"></i> <span style="font-weight: bold;">Dashboard</span></a></li>
+        <div class="seperate_line"></div>
+        <li><a href="/purchase"><i class="bi bi-bag-plus"></i> Purchase / Restock</a></li>
+        <li><a href="/sales"><i class="bi bi-receipt-cutoff"></i> Sales</a></li>
+        <li><a href="/stock-check"><i class="bi bi-clipboard-check"></i> Stock Check</a></li>
+        <div class="seperate_line"></div>
+        <li><a href=""><i class="bi bi-gear"></i> Add / Manage</a></li>
+        <li class="sub-menu"><a href="/categories"><i class="bi bi-folder"> </i> Categories</a></li>
+        <li class="sub-menu"><a href="/add-product"><i class="bi bi-plus-square"></i> Products</a></li>
+        <li class="sub-menu"><a href="/manage-suppliers"><i class="bi bi-person-lines-fill"></i> Suppliers</a></li>
+        <li class="sub-menu"><a href="/products"><i class="bi bi-box-seam"></i> Products</a></li>
+    </ul>
+</div>
+<div class="toplogo">
+    <button class="openbtn" onclick="openNav()">☰</button>
+</div>
+<div id="overlay" onclick="closeNav()"></div>
+
+<script>
+    function openNav() {
+        document.getElementById("mySidebar").style.width = "250px";
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("overlay").style.display = "none";
+    }
+
+    // Close sidebar when clicking on overlay
+    document.getElementById("overlay").addEventListener('click', closeNav);
+</script>

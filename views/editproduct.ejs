@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include('partials/sidebar') %>
+    <div class="container">
+        <h1>Edit Product</h1>
+
+        <form action="/edit-product/<%= product.product_id %>" method="POST">
+            <div class="mb-3">
+                <label for="product_name" class="form-label">Product Name:</label>
+                <input type="text" id="product_name" name="product_name" class="form-control" value="<%= product.product_name %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="category_id" class="form-label">Category:</label>
+                <select id="category_id" name="category_id" class="form-select" required>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category.id %>" <%= category.id == product.category_id ? 'selected' : '' %>>
+                            <%= category.name %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <h3>SKUs</h3>
+            <div id="sku-container">
+                <% skus.forEach(sku => { %>
+                    <div class="mb-3 sku-row">
+                        <label for="sku_<%= sku.sku_id %>" class="form-label">SKU:</label>
+                        <input type="hidden" name="sku_ids[]" value="<%= sku.sku_id %>"> <!-- Hidden input for sku_id -->
+                        <input type="text" id="sku_<%= sku.sku_id %>" name="skus[]" class="form-control d-inline-block w-75" value="<%= sku.sku_name %>" required>
+                        <button type="button" class="btn btn-danger btn-sm remove-sku">Delete</button>
+                    </div>
+                <% }) %>
+            </div>
+
+            <!-- Hidden input to store IDs of SKUs to be deleted -->
+            <input type="hidden" id="deleted_skus" name="deleted_skus" value="">
+
+            <!-- Button to add new SKU fields -->
+            <button type="button" id="add-sku" class="btn btn-secondary">Add SKU</button>
+
+            <button type="submit" class="btn btn-primary">Update Product</button>
+            <a href="/stock-check" class="btn btn-secondary">Cancel</a> <!-- Cancel button -->
+        </form>
+    </div>
+
+    <!-- JavaScript to handle the addition and deletion of SKU rows -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const skuContainer = document.getElementById('sku-container');
+            const deletedSkusInput = document.getElementById('deleted_skus');
+            let skuCounter = <%= skus.length %>; // Counter to generate unique IDs for new SKUs
+
+            // Handle delete SKU
+            skuContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-sku')) {
+                    const skuRow = e.target.closest('.sku-row');
+                    const skuId = skuRow.querySelector('input[type="hidden"]').value; // Get the SKU ID from the hidden input
+
+                    // Add the SKU ID to the list of deleted SKUs
+                    let deletedSkus = deletedSkusInput.value ? deletedSkusInput.value.split(',') : [];
+                    if (!skuId.startsWith('new')) { // Only add existing SKU IDs for deletion
+                        deletedSkus.push(skuId);
+                    }
+                    deletedSkusInput.value = deletedSkus.join(',');
+
+                    // Remove the SKU row from the form
+                    skuRow.remove();
+                }
+            });
+
+            // Handle add SKU
+            document.getElementById('add-sku').addEventListener('click', function() {
+                skuCounter++; // Increment the counter for unique IDs
+                const newSkuRow = document.createElement('div');
+                newSkuRow.className = 'mb-3 sku-row';
+                newSkuRow.innerHTML = `
+                    <label for="sku_new_${skuCounter}" class="form-label">SKU:</label>
+                    <input type="text" id="sku_new_${skuCounter}" name="new_skus[]" class="form-control d-inline-block w-75" required>
+                    <button type="button" class="btn btn-danger btn-sm remove-sku">Delete</button>
+                `;
+                skuContainer.appendChild(newSkuRow);
+            });
+        });
+    </script>
+</body>
+</html>
